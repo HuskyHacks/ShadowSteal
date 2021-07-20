@@ -26,7 +26,7 @@ It's currently hard coded to iterate 10 times through "HarddiskVolumeShadowCopy[
 
 It's nothing earth shattering and the code is hacky, but it works and it was a fun build!
 
-## Install
+## Setup & Run
 
 Install Nim:
 ```
