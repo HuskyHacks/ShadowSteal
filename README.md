@@ -18,6 +18,36 @@ The SAM is normally locked during the host's operation, so accessing the SAM in 
 
 ShadowStealer is a binary written in Nim to automate the enumeration and exfiltration of the SAM, System, and Security files from these shadow copies. It iterates through the possible locations of the shadow copies and, when it has found a target, it extracts the files to a zipped directory (think Bloodhound output).
 
-![3.png](img/4.png)
+It's currently hard coded to iterate 10 times through "HarddiskVolumeShadowCopy[#]" directory until it finds a hit. Future build may include adding cmd line arguments to expand this, but I think 1-10 should be good for POC purposes.
+
+![4.png](img/4.png)
 
 It's nothing earth shattering and the code is hacky, but it works and it was a fun build!
+
+## Install
+
+Install Nim:
+```
+$ sudo apt-get install nim
+````
+Install dependencies:
+```
+$ nimble install zippy
+```
+Compile for 64-bit Windows:
+```
+$ nim c --d:mingw --cpu=amd64 --app=console ShadowSteal.nim
+```
+Transfer to target and run it!
+```
+PS C:\Users\husky\Desktop> .\ShadowSteal.exe
+```
+Then, transfer the output directory back to your attacker host and carve the data with Pypykatz. To install:
+```
+$ pip3 install pypykatz
+```
+To run Pypykatz:
+```
+$ pypykatz registry [yyyyMMddhhmm_SYSTEM] --sam [yyyyMMddhhmm_SAM] --security [yyyyMMddhhmm_SECURITY]
+```
+![5.png](img/5.png)
