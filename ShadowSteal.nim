@@ -60,6 +60,7 @@ proc shadowSteal(): void =
             echo "[-] " & nope
 
     echo "[*] Done! Happy hacking!"
+    quit(0)
 
 when defined(windows):
     if defined(i386):
