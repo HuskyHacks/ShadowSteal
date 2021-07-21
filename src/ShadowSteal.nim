@@ -55,7 +55,7 @@ proc shadowSteal(): void =
             else:
                 continue
         else:
-            var nopes = ["Nope", "Nah fam", "Nein", "Negaive", "No", "Not there", "No way", "No :("]
+            var nopes = ["Nope", "Nah fam", "Nein", "Negative", "No", "Not there", "No way", "No :("]
             let nope = sample(nopes)
             echo "[-] " & nope
 
