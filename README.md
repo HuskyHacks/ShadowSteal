@@ -8,7 +8,7 @@ Due to some oversight by Microsoft, regular users have read permissions over the
 
 Ooof. So what can we do with this?
 
-Some very observant researchers noticed that if a Windows host has been using a specific system restore configuration, "Shadow Volume Copy", then the host stores backup copies of these files that are accessible via the Win32 device namespace for these copies.
+Some very observant researchers (shout out [@jonasLyk](https://twitter.com/jonasLyk)!) noticed that if a Windows host has been using a specific system restore configuration, "Shadow Volume Copy", then the host stores backup copies of these files that are accessible via the Win32 device namespace for these copies.
 
 ![2.png](img/2.png)
 
