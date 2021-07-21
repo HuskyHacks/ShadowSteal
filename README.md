@@ -16,7 +16,7 @@ Some very observant researchers noticed that if a Windows host has been using a 
 
 The SAM is normally locked during the host's operation, so accessing the SAM in System32\config\ is out of the question. But these shadow volume copies are fair game for any user on the host due to this misconfiguration.
 
-## ShadowStealer
+## ShadowSteal
 
 ShadowStealer is a binary written in Nim to automate the enumeration and exfiltration of the SAM, System, and Security files from these shadow copies. It iterates through the possible locations of the shadow copies and, when it has found a target, it extracts the files to a zipped directory (think Bloodhound output).
 
