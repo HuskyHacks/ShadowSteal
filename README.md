@@ -53,3 +53,6 @@ To run Pypykatz:
 $ pypykatz registry [yyyyMMddhhmm_SYSTEM] --sam [yyyyMMddhhmm_SAM] --security [yyyyMMddhhmm_SECURITY]
 ```
 ![5.png](img/5.png)
+
+## Disclaimer
+For legal, ethical use only.
