@@ -18,7 +18,7 @@ The SAM is normally locked during the host's operation, so accessing the SAM in 
 
 ## ShadowSteal
 
-ShadowStealer is a binary written in Nim to automate the enumeration and exfiltration of the SAM, System, and Security files from these shadow copies. It iterates through the possible locations of the shadow copies and, when it has found a target, it extracts the files to a zipped directory (think Bloodhound output).
+ShadowSteal is a binary written in Nim to automate the enumeration and exfiltration of the SAM, System, and Security files from these shadow copies. It iterates through the possible locations of the shadow copies and, when it has found a target, it extracts the files to a zipped directory (think Bloodhound output).
 
 It's currently hard coded to iterate 10 times through "HarddiskVolumeShadowCopy[#]" directory until it finds a hit. Future build may include adding cmd line arguments to expand this, but I think 1-10 should be good for POC purposes.
 
