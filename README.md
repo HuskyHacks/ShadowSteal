@@ -54,5 +54,9 @@ $ pypykatz registry [yyyyMMddhhmm_SYSTEM] --sam [yyyyMMddhhmm_SAM] --security [y
 ```
 ![5.png](img/5.png)
 
+## References
+- Original disclose of this CVE by by [@jonasLyk](https://twitter.com/jonasLyk).
+- [CVE Reference page](https://msrc.microsoft.com/update-guide/vulnerability/CVE-2021-36934)
+
 ## Disclaimer
-For legal, ethical use only.
+- For legal, ethical use only.
