@@ -36,6 +36,11 @@ Install dependencies:
 ```
 $ nimble install zippy
 ```
+Install the MinGW tool chain if it's not already installed:
+```
+$ sudo apt-get install mingw-w64
+```
+
 Compile for 64-bit Windows:
 ```
 $ nim c --d:mingw --cpu=amd64 --app=console ShadowSteal.nim
