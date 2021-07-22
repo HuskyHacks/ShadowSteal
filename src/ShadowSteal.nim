@@ -5,7 +5,6 @@
     POC: enumerates host drives for shadow volumes of SAM, SYSTEM, and SECURITY hive keys.
     First build: naive implementation, no OPSEC considerations, hacky, and that's the way I like it.
     PRs welcome :)
-
 ]#
 
 import os
