@@ -6,7 +6,7 @@ Pure Nim implementation for exploiting CVE-2021-36934, the SeriousSAM Local Priv
 $ sudo apt-get install nim
 ```
 ```
-$ nimble install zippy argparse
+$ nimble install zippy argparse winim
 ```
 
 Install the MinGW tool chain if it's not already installed.
