@@ -64,7 +64,7 @@ $ sudo apt-get install nim
 ````
 Install dependencies:
 ```
-$ nimble install zippy argparse
+$ nimble install zippy argparse winim
 ```
 Install the MinGW tool chain if it's not already installed:
 ```
