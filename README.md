@@ -14,7 +14,7 @@ Install the MinGW tool chain if it's not already installed.
 $ sudo apt-get install mingw-w64
 ```
 ```
-git clone https://github.com/HuskyHacks/ShadowSteal.git && cd ShadowSteal
+$ git clone https://github.com/HuskyHacks/ShadowSteal.git && cd ShadowSteal
 ```
 ```
 $ make && cd bin/ && ls -l
@@ -81,6 +81,16 @@ Transfer to target and run it!
 
 ```
 PS C:\Users\husky\Desktop> .\ShadowSteal.exe -h
+[*] ShadowSteal! Identifies and extracts credentials that can be stolen due to the SeriousSAM (CVE-2021-36934) exploit. Searches from high to low, defaults searching 100 to 1.
+
+Usage:
+   [options]
+
+Options:
+  -h, --help
+  -t, --triage               [*] Triage mode. Quick enumeration, tries to find quick wins.
+  -bf, --bruteforce          [*] Bruteforce mode. Enumerates the entire range of possible locations (512 to 1). Takes a bit.
+  -b, --bezos                [?] Jeff Bezos Mode
 ```
 
 ## Triage mode
@@ -110,7 +120,7 @@ $ pypykatz registry [yyyyMMddhhmm_SYSTEM] --sam [yyyyMMddhhmm_SAM] --security [y
 ## Release History
 
 ###  v.03.69 | the N I C E update
-Lean and mean.  Compress all shadow files that exist. Optimized compile options added. Huge thanks to @orbitalgun for the pseudo PR!
+Lean and mean. Optimized compile options added. HUGE performance increase due to compiler optimization, full bruteforce now takes place almost instantly. Huge thanks to @orbitalgun for the pseudo PR, glory be to your house and name!
 
 ### v.02 THE JEFF BEEZY UPDATE
 - Bruteforce and Triage mode
@@ -121,6 +131,8 @@ Lean and mean.  Compress all shadow files that exist. Optimized compile options 
 
 ### v.01 THE LAUNCHPAD RELEASE
 Stap in boiz, this trainwreck is a-rollin. This release was my rapid prototype and it was pretty terrible lol. Lots of fun to build though!
+Features:
+- "Working" code
 
 ## References
 
