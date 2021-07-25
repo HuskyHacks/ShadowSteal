@@ -1,5 +1,5 @@
 # ShadowSteal | CVE-2021-36934
-Pure Nim implementation for exploiting CVE-2021-36934, the SeriousSAM Local Privilege Escalation (LPE). Nothing fancy, basically just a wrapper for PowerShell copy, but does save some time if you're triaging vulnerable hosts. Not OPSEC safe.... yet ;). I do not claim credit for the discovery of this exploit.
+Pure Nim implementation for exploiting CVE-2021-36934, the SeriousSAM Local Privilege Escalation (LPE). Not OPSEC safe.... yet ;). I do not claim credit for the discovery of this exploit.
 
 ## Quick Start
 ```
