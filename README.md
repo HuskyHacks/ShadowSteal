@@ -3,6 +3,7 @@ Pure Nim implementation for exploiting CVE-2021-36934, the SeriousSAM Local Priv
 
 ## Quick Start
 
+### Build with Docker
 Getting started with ShadowSteal is now easier than ever thanks to Docker! Don't wanna mess with installing Nim dependencies? I got you, fam! Run the Python script to create the Docker build environment, compile the binary, transfer it back to your host, and then kill the container.
 
 Install Docker on your host (look up the documentation for how to install for different OS), then run the ShadowSteal Python script in the main dir:
@@ -13,6 +14,7 @@ $ git clone https://github.com/HuskyHacks/ShadowSteal.git && cd ShadowSteal
 $ sudo python3 ShadowSteal.py && cd bin/ && ls -l
 ```
 
+### Build from Source
 Or, build from source by installing Nim and its dependencies:
 
 ```
