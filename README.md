@@ -2,6 +2,17 @@
 Pure Nim implementation for exploiting CVE-2021-36934, the SeriousSAM Local Privilege Escalation (LPE). Not OPSEC safe.... yet ;). I do not claim credit for the discovery of this exploit.
 
 ## Quick Start
+
+Getting started with ShadowSteal is now easier than ever thanks to Docker! Don't wanna mess with installing Nim dependencies? I got you, fam! Run the Python script to create the Docker build environment, compile the binary, transfer it back to your host, and then kill the container.
+
+Install Docker on your host (look up the documentation for how to install for different OS), then run the ShadowSteal Python script in the main dir:
+
+```
+$ sudo python3 ShadowSteal.py && cd bin/ && ls -l
+```
+
+Or, build from source by installing Nim and its dependencies:
+
 ```
 $ sudo apt-get install nim
 ```
@@ -45,17 +56,18 @@ ShadowSteal is a binary written in Nim to automate the enumeration and exfiltrat
 
 ![4.png](img/4.png)
 
-Features:
+## Features:
 - Triage and Bruteforce mode, for thorough or rapid enumeration.
 - Automated extraction and rollup of target credentials.
 - Jeff Beezy mode. (wait, what?)
-- WIll enumerate all available HarddiskShadowCopy locations, pick the highest number dynamically, and target those for exploitation/extraction.
+- Integrated Docker build environment for easy complation!
+- Will enumerate all available HarddiskShadowCopy locations, pick the highest number dynamically, and target those for exploitation/extraction.
 
 ![6.png](img/6.png)
 
 It's nothing earth shattering and the code is hacky, but it works and it was a fun build!
 
-## Setup
+## Installing from Source
 
 Install Nim:
 
@@ -118,6 +130,9 @@ $ pypykatz registry [yyyyMMddhhmm_SYSTEM] --sam [yyyyMMddhhmm_SAM] --security [y
 ![5.png](img/5.png)
 
 ## Release History
+
+### v.04.01 | the Docktastic update
+Now features an easy pre-packaged Docker build environment! Just run the ShadowSteal.py script to set up the Docker environment, compile the binay, transfer it back out to your host, and kill the build containers. It just works!
 
 ###  v.03.69 | the N I C E update
 Lean and mean. Optimized compile options added. HUGE performance increase due to compiler optimization, full bruteforce now takes place almost instantly. Huge thanks to @orbitalgun for the pseudo PR, glory be to your house and name!
