@@ -132,7 +132,7 @@ $ pypykatz registry [yyyyMMddhhmm_SYSTEM] --sam [yyyyMMddhhmm_SAM] --security [y
 ## Release History
 
 ### v.04.01 | the Docktastic update
-Now features an easy pre-packaged Docker build environment! Just run the ShadowSteal.py script to set up the Docker environment, compile the binay, transfer it back out to your host, and kill the build containers. It just works!
+Now features an easy pre-packaged Docker build environment! Just run the ShadowSteal.py script to set up the Docker environment, compile the binay, transfer it back out to your host, and kill the build containers. It just works! (Some assembly requied, i.e. you need Docker to run it).
 
 ###  v.03.69 | the N I C E update
 Lean and mean. Optimized compile options added. HUGE performance increase due to compiler optimization, full bruteforce now takes place almost instantly. Huge thanks to @orbitalgun for the pseudo PR, glory be to your house and name!
