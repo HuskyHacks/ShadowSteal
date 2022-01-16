@@ -60,6 +60,7 @@ proc search(min: int, max: int): int =
         return location
     else:
         echo "[-] No luck, fam."
+        quit()
 
 proc exploit(location: int): void =
     let archive = ZipArchive()
